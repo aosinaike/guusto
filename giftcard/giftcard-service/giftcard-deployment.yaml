@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: giftcard-deployment
+  labels:
+    name: guusto-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: giftcard
+  template:
+    metadata:
+      labels:
+        app: giftcard
+    spec:
+      containers:
+        - name:  guusto-service
+          image: guusto/guusto-service:latest
+          ports:
+            - containerPort: 8081
+              name: "http"

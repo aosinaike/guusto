@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.guusto";
+
+message BalanceResponse {
+    string message = 1;
+    bool status = 2;
+}
+
+message GiftCardRequest {
+   string  clientId = 1;
+   string  giftCard = 2;
+   int32     quantity = 3;
+   string  totalAmount =4;
+}
+
+service GiftCardBalance{
+    rpc processGiftCardRequest(GiftCardRequest) returns (BalanceResponse){}
+}
