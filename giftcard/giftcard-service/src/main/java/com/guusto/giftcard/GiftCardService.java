@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GiftCardService {
 
-    List<GiftCardModel> findAll();
+    List<CardTransactionModel> findAll();
 
-    BalanceResponse buyGiftCards(com.guusto.GiftCardRequest giftCardRequest);
+    CardTransactionModel buyGift(com.guusto.GiftCardRequest giftCardRequest);
 }

@@ -6,6 +6,7 @@ option java_package = "com.guusto";
 message BalanceResponse {
     string message = 1;
     bool status = 2;
+    string balance = 3;
 }
 
 message GiftCardRequest {

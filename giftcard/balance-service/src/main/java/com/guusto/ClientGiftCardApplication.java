@@ -5,11 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-//@EnableJpaRepositories
-public class BalanceApplication {
+public class ClientGiftCardApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BalanceApplication.class, args);
+		SpringApplication.run(ClientGiftCardApplication.class, args);
 	}
 
 }

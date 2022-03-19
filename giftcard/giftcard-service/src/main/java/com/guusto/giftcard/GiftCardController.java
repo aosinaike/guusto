@@ -21,25 +21,24 @@ public class GiftCardController {
     @Autowired
     GiftCardService giftCardService;
 
-    @GetMapping("/gifts")
-    public ResponseEntity<List<GiftCardModel>> fetchAllCardGifts(){
+    @GetMapping("/transactions")
+    public ResponseEntity<List<CardTransactionModel>> fetchAllCardTransactionGifts(){
         try {
-            List<GiftCardModel> giftCardModelList = new ArrayList<>();
-            giftCardService.findAll().forEach(giftCardModelList::add);
-            if (giftCardModelList.isEmpty()) {
+            List<CardTransactionModel> transactionList = giftCardService.findAll();
+            if (transactionList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(giftCardModelList, HttpStatus.OK);
+            return new ResponseEntity<>(transactionList, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/buy-gift")
-    public ResponseEntity<BalanceResponse> buyGiftCardGifts(@RequestBody GiftCardRequest giftCardRequest){
+    public ResponseEntity<CardTransactionModel> buyGifts(@RequestBody GiftCardRequest giftCardRequest){
         try {
-            BalanceResponse balanceResponse = giftCardService.buyGiftCards(giftCardRequest);
-            return new ResponseEntity<>(balanceResponse, HttpStatus.OK);
+            CardTransactionModel response = giftCardService.buyGift(giftCardRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -14,7 +14,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     public CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-//    public CustomSuccessHandler customSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -8,19 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 class GiftCardBalance extends GiftCardBalanceGrpc.GiftCardBalanceImplBase{
 
     @Autowired
-    BalanceService balanceService;
+    GiftCardService giftCardService;
 
     @Override
     public void processGiftCardRequest(GiftCardRequest request, StreamObserver<BalanceResponse> responseObserver) {
-        BalanceModel balanceModel = balanceService.findBalanceByClientId(request.getClientId());
-
+        ClientGiftCardModel balanceModel = giftCardService.findBalanceByClientId(request.getClientId());
         if (balanceModel != null){
-            if (Double.parseDouble(request.getTotalAmount()) > Double.parseDouble(balanceModel.getBalance())){
+            if (Integer.parseInt(request.getTotalAmount()) > Integer.parseInt(balanceModel.getBalance())){
                 responseObserver.onNext(BalanceResponse.newBuilder()
                         .setMessage("Insufficient fund").setStatus(false).build());
                 responseObserver.onError(new Throwable("An unxpected error occured"));
                 responseObserver.onCompleted();
             }else{
+                int balance = Integer.parseInt(balanceModel.getBalance()) - Integer.parseInt(request.getTotalAmount())* request.getQuantity();
+                giftCardService.updateBalance(Integer.toString(balance), balanceModel.getClientId());
                 responseObserver.onNext(BalanceResponse.newBuilder()
                         .setMessage("Gift purchase was successful").setStatus(true).build());
                 responseObserver.onError(new Throwable("An unxpected error occured"));

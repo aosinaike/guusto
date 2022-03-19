@@ -13,20 +13,30 @@ public class GiftCardServiceImpl implements GiftCardService{
     @GrpcClient("guusto-balance")
     GiftCardBalanceGrpc.GiftCardBalanceBlockingStub GiftCardBalanceClient;
 
-    private GiftCardRepository giftCardRepository ;
+    private CardTransactionRepository repository ;
 
     @Autowired
-    public GiftCardServiceImpl(GiftCardRepository giftCardRepository) {
-        this.giftCardRepository = giftCardRepository;
+    public GiftCardServiceImpl(CardTransactionRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<GiftCardModel> findAll() {
-        return giftCardRepository.findAll();
+    public List<CardTransactionModel> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    public BalanceResponse buyGiftCards(com.guusto.GiftCardRequest giftCardRequest) {
-        return GiftCardBalanceClient.processGiftCardRequest(giftCardRequest);
+    public CardTransactionModel buyGift(com.guusto.GiftCardRequest giftCardRequest) {
+        BalanceResponse response =  GiftCardBalanceClient.processGiftCardRequest(giftCardRequest);
+        if (response.getStatus()){
+            CardTransactionModel transaction = new CardTransactionModel();
+            transaction.setAmount(giftCardRequest.getTotalAmount());
+            int balance = giftCardRequest.getQuantity()*Integer.getInteger(giftCardRequest.getTotalAmount())-Integer.getInteger(response.getBalance());
+            transaction.setBalance(Integer.toString(balance));
+            transaction.setGift(giftCardRequest.getGiftCard());
+            transaction.setQuantity(giftCardRequest.getQuantity());
+            return repository.save(transaction);
+        }
+        return null;
     }
 }
