@@ -1,6 +1,4 @@
-package com.guusto.giftcard;
-
-import javax.persistence.*;
+package com.guusto.balance;
 
 public class GiftCardRequest {
     private String  clientId;
